@@ -35,13 +35,19 @@ Now the listener is setup for splunk, the next step to go back splunk forwarder 
 
 <img width="769" height="596" alt="image" src="https://github.com/user-attachments/assets/02eacace-842b-4545-8f38-7d9341fcd185" />
 
-6. Enter the host IP address and port number. In my case my windows IP is same as my splunk server IP address.
+6. Enter the Windows IP address and port number. In my case my windows IP is same as my splunk server IP address.
 
 <img width="771" height="601" alt="image" src="https://github.com/user-attachments/assets/8154b046-57a1-4760-859b-90f1a281e430" />
 
 7. Then click install and allow "Yes" to continue installing splunk forwarder. After some time you'll see your splunk forwarder successfully installed and ready to collect windows logs
 
 <img width="770" height="599" alt="image" src="https://github.com/user-attachments/assets/25368e47-351e-447e-8f42-8715e560ff80" />
+
+
+Here we can see our windows log is capturing by splunk forwarder
+
+<img width="1576" height="929" alt="image" src="https://github.com/user-attachments/assets/e30c87a0-181f-4d57-a807-7315374ce784" />
+
 
 
 
