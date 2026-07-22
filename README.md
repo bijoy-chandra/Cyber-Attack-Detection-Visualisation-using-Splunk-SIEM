@@ -4,13 +4,13 @@
 
 Splunk is a **Security Information and Event Management (SIEM)** platform that collects, indexes, searches, analyzes, and visualizes machine generated logs from various endpoints such as operating systems, web servers, firewalls, network devices, cloud platforms, and applications. Splunk operates on three main component:
 
-- 1. Forwarder:
+- Forwarder:
 The Forwarder is a lightweight Splunk agent installed on source machines (e.g., Windows, Linux, servers, or firewalls). It collects log data and securely forwards it to the Splunk Indexer for processing. It performs minimal processing to reduce system resource usage.
 
-- 2. Indexer:
+- Indexer:
 The Indexer is the core component of Splunk that receives data from Forwarders. It parses, indexes, compresses, and stores the log data, making it searchable for analysis and investigation.
 
-- 3. Search Head:
+- Search Head:
 The Search Head is the user interface where analysts interact with Splunk. It executes SPL (Splunk Processing Language) searches on indexed data and displays the results through dashboards, reports, and alerts.
 
 ## Overview of the project
