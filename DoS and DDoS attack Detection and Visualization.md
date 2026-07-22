@@ -2,30 +2,47 @@
 
 ### Introduction
 Cross-Site Scripting (XSS) is one of the most prevalent methods used to attack web applications, whereby a hacker injects a harmful script into the input fields and URL of the website, thereby running malicious code within the victim's browser. The detection of possible XSS exploits on the web servers' logs can be achieved by using Splunk SIEM through analysis of the payload, suspicious requests, and harmful input.
+
 ### Overview
 In this project, we will generate XSS attack from our attacking kali Linux machine and perform analytical skills to identify and visualize XSS attack within the web application.
+
 ### Prerequisites
 Before starting the analysis, ensure the following:
 - Splunk instance is installed and configured.
-- Configure Apache server and DVWA 
-- A kali linux attacking machine to perform XSS attack
+- Create a DoS or DDoS attack log 
+- A kali linux attacking machine to perform DoS or DDoS attack
 
 ### Performing Cross site scripting (XSS) attack
 
-- Perform XSS attack from burp suite
-
-<img width="797" height="401" alt="image" src="https://github.com/user-attachments/assets/93a1bfe2-40e5-4c7c-b8e8-30f0f583425d" />
-
-<img width="1473" height="801" alt="image" src="https://github.com/user-attachments/assets/fa3ddaae-75a7-47df-8fae-cb5ce47fb62b" />
-
-
-- We can view web application logs from **/apache2/access.log** via this command from victim machine
+- Perform these following commands on victim machine
+- Create an iptables rule to log all incoming TCP SYN packets on port 80 with the prefix "TCP-DDOS:"
+- **journalctl** : Monitors kernel logs, filters "TCP-DDOS" entries, and saves them to /var/log/ddos.log for Splunk analysis.
 ```bash
-tail -f /var/log/apache2/access.log
+sudo iptables -A INPUT -p tcp --dport 80 --syn -j LOG --log-prefix "TCP-DDOS: " --log-level 4
+sudo su
+journalctl -k -f | grep "TCP-DDOS" >> /var/log/ddos.log
+```
+
+- Now Generate an simple DDoS attack using random source
+```bash
+sudo hping3 -S -p 80 --flood --rand-source 192.168.132.130
+```
+- Generate an DoS attack
+```bash
+sudo hping3 -S -p 80 --flood 192.168.132.130
+```
+
+<img width="831" height="367" alt="image" src="https://github.com/user-attachments/assets/59419904-2d92-4690-b746-9b6afe763f74" />
+
+
+- We can view DDoS attack logs from **var/log/ddos.log** via this command from victim machine
+```bash
+tail -f /var/log/ddos.log
 ```
 
 ##### Command output
-<img width="1699" height="463" alt="image" src="https://github.com/user-attachments/assets/731c1a07-cade-403d-9493-b2ee617637e4" />
+<img width="1705" height="436" alt="image" src="https://github.com/user-attachments/assets/8bad8eed-6ac3-44a6-b8d6-40766aa4417e" />
+
 
 
 ## Steps to detect XSS attack in Splunk SIEM
