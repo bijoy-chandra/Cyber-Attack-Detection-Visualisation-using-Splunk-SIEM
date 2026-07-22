@@ -15,7 +15,7 @@ The Search Head is the user interface where analysts interact with Splunk. It ex
 
 ## Overview of the project
 
-In this project i setup a DVWA server in kali inux machine and another kali linux machine for attacking purposes. My splunk server hosted on windows 11. Here is a diagram of my project:
+In this project i setup a DVWA server in kali linux machine and another kali linux machine for attacking purposes. My splunk server hosted on windows 11. Here is a diagram of my project:
 
 <img width="756" height="559" alt="image" src="https://github.com/user-attachments/assets/eb8640ae-865b-4fcf-8210-17921da617e9" />
 
