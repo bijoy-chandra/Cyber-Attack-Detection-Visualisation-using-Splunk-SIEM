@@ -1,40 +1,68 @@
 ## SSH Brute Force Attack Detection and Visualization
 
 ### Introduction
-SSH (Secure Shell) authentication logs contain useful data regarding the login attempts, which include successful and unsuccessful authentication events. Security analysts use Splunk SIEM to analyze these logs and detect SSH brute force attacks by identifying multiple login failures. This will allow for the monitoring of activities carried out by the attackers in real time, as well as visualization of the attacks through interactive dashboards.
+SSH is the most widely used protocol for the remote administration of Linux/Unix based systems. Due to direct server access, SSH protocol is the prime target for malicious users trying to hack into the system. An SSH brute force attack is one of the most popular ways of performing an attack, where the attacker tries different usernames/passwords combinations until he/she finds the correct one. This kind of attacks produces many failed logins in a short period of time and finally leads to a successful login in case of weak authentication.
+
+In this research, we use Splunk SIEM for collecting and analyzing the Linux authentication logs and detecting SSH brute force attacks. Using SPL commands we find suspicious activities, analyze the attacker's actions and create interactive dashboards to present attack trends.
 
 ### Overview
-In this project, we will generate SSH brute force attack from our attacking kali Linux machine and perform analytical skills to identify and visualize SSH brute force attack within the network.
+This project is a demonstration of how to generate an SSH brute force attack on a testbed and detect the attack via Splunk SIEM.
+
+The process is comprised of:
+
+- Brute force attack generation on SSH from an attacking Kali Linux machine
+- Data collection of Linux authentication logs via Splunk Universal Forwarder
+- Authentication failure detection
+- Successful login detection after brute force attacks
+- Detection of the busiest attacker IP addresses
+- Attack visualization via Splunk dashboards
 
 ### Prerequisites
-Before starting the analysis, ensure the following:
-- Splunk instance is installed and configured.
-- SSH log data sources are configured to forward logs to Splunk.
-- A kali linux attacking machine to perform brute force attack
+Before beginning the analysis process, the following prerequisites should be satisfied:
+
+- Splunk Enterprise is set up.
+- Splunk Universal Forwarder is configured to collect the Linux authentication logs.
+- The SSH service is running on the target Linux system.
+- A Kali Linux attacker machine is set up.
+- Network connection is present between the attacker, victim, and Splunk server.
+
+### Key Indicators of SSH Brute Force Attacks
+
+The following are some of the signs that security analysts should look for when examining SSH authentication logs:
+
+- Multiple failed login attempts from one IP address
+- High rate of authentication failures within a short period of time
+- Immediate successful login attempt after many failed ones
+- Login attempts using several usernames from one IP address
+- Connection requests from unlikely geographical locations
+- Repeated authentication attempts outside office hours
+- Multiple IP addresses attacking the same SSH server
 
 ### Performing a SSH brute force attack
 
-- Command to produce a ssh brute force attack
+For demonstration purposes, a brute force attack is generated using Hydra against the target SSH server.
+
+**Hydra Command**
 ```bash
 hydra -l kali -P /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt ssh://192.168.132.130
 ```
 
-- We can view authentication logs from **auth.log** via this command from victim machine
+During the attack, authentication events can be monitored on the victim machine using:
 ```bash
 tail -f /var/log/auth.log
 ```
 
-##### Command output
+##### Sample Authentication Logs
 <img width="1697" height="743" alt="image" src="https://github.com/user-attachments/assets/ca06a9e6-60c8-4f0b-a14e-96a2f8082fe0" />
 
 
-## Steps to detect SSH brute force attack in Splunk SIEM
+## Detecting SSH Brute Force Attacks in Splunk SIEM
 
 
-### 1. Search for SSH Events
+### 1. Search for SSH Authentication Events
 - Open Splunk interface and navigate to the search bar.
 - Enter the following search query to retrieve SSH failed and successful login event:
-- index=*  means searching through the every index. We can also specify exact index to look ssh authentication logs.
+- index=* will search all indexes. However, in a production environment, you are advised to search the relevant index where your Linux authentication logs exist.
 ```
 index=* ("Failed password" OR "Accepted password")
 ```
@@ -78,7 +106,7 @@ index=* source="/var/log/auth.log"
 
 ### 4. Identify brute force attack over time
 - Key indicator is multiple login attempt in a short span of time.
-- **span=5m**; It will detect multiple login attempt within 5 minutes
+- The **span** value can be adjusted depending on the expected attack frequency.
 ```
 index=* ("Failed password" OR "Accepted password") "*"
 | timechart span=5m count  ## Based on situation time can be increase and decrease
@@ -90,7 +118,7 @@ index=* ("Failed password" OR "Accepted password") "*"
 
 
 
-### 5. Top attacker geolocation 
+### 5. Analyze Attacker Geolocation
 - Look for login attempt from unusual geolocation
 ```
 index=* source="/var/log/auth.log" "*"
@@ -107,3 +135,17 @@ index=* source="/var/log/auth.log" "*"
 
 <img width="1465" height="655" alt="image" src="https://github.com/user-attachments/assets/fcb3c22f-9de4-4a42-b9aa-05f06f3cb73f" />
 
+
+### Investigation Summary
+
+SSH authentication logs analysis using Splunk SIEM helps to detect quickly the brute-force attacks and comprehend the attacker's behavior.
+
+The analysis reveals information about:
+
+- Source IP addresses initiating multiple login attempts
+- Number of failed/unsuccessful and successful authentication attempts
+- Trends in terms of time
+- Country from which the attacks originate
+- Attack rate
+
+The interactive dashboards help to spot the malicious activities much faster.
