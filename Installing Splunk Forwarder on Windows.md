@@ -25,7 +25,7 @@ Before performing the installation process, please make sure that the following 
 <img width="772" height="596" alt="image" src="https://github.com/user-attachments/assets/254136f4-844b-43ea-9117-abcd83a1c7fe" />
 
 
-### Step 4.  Create Username and Password and then click next
+### Step 3.  Create Username and Password and then click next
 
 <img width="765" height="597" alt="image" src="https://github.com/user-attachments/assets/e118986a-2aa8-42e0-939e-fd7e29b7b1c6" />
 
@@ -48,25 +48,20 @@ Before completing the Universal Forwarder installation, the Splunk Enterprise se
 
 Once completed, the Splunk Enterprise server is ready to receive data from Universal Forwarders.
 
-### Step 5: Configure the Deployment Server
+
+### Step 5: Configure the Receiving Indexer
 
 - Enter the server IP you've hosted your splunk server and the listener port number.
 
-<img width="769" height="596" alt="image" src="https://github.com/user-attachments/assets/02eacace-842b-4545-8f38-7d9341fcd185" />
-
-### Step 6: Configure the Windows Endpoint
-
-- Enter the Windows IP address and port number. In my case my windows IP is same as my splunk server IP address.
-
 <img width="771" height="601" alt="image" src="https://github.com/user-attachments/assets/8154b046-57a1-4760-859b-90f1a281e430" />
 
-Step 8: Complete the Installation
+### Step 6: Complete the Installation
 
 - Click install and allow "Yes" to continue installing splunk forwarder. After some time you'll see your splunk forwarder successfully installed and ready to collect windows logs
 
 <img width="770" height="599" alt="image" src="https://github.com/user-attachments/assets/25368e47-351e-447e-8f42-8715e560ff80" />
 
-### Step 9: Verify Windows Event Log Collection
+### Step 7: Verify Windows Event Log Collection
 
 Go to the Search & Reporting app in Splunk Enterprise and run the following search command:
 
