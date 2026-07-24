@@ -1,10 +1,10 @@
 ## DoS and DDoS attack Detection and Visualization
 
 ### Introduction
-Cross-Site Scripting (XSS) is one of the most prevalent methods used to attack web applications, whereby a hacker injects a harmful script into the input fields and URL of the website, thereby running malicious code within the victim's browser. The detection of possible XSS exploits on the web servers' logs can be achieved by using Splunk SIEM through analysis of the payload, suspicious requests, and harmful input.
+Denial of Service (DoS) & Distributed Denial of Service (DDoS) Attack is one of the most common attacks performed in cyber world with the objective of overloading the target server or application with large traffic so as to render it unavailable for any legitimate user. Potential DoS/DDoS attacks can be detected through network and firewall logs analysis using Splunk SIEM by looking for irregular traffic volume, connection attempts, and unusual activities from source IP addresses.
 
 ### Overview
-In this project, we will generate XSS attack from our attacking kali Linux machine and perform analytical skills to identify and visualize XSS attack within the web application.
+In this project, we will simulate the DoS and DDoS attacks from the attacker Kali Linux machine and use Splunk SIEM to analyze the logs generated, detect any unusual traffic patterns, and visualize the attacks using the dashboards provided by Splunk SIEM.
 
 ### Prerequisites
 Before starting the analysis, ensure the following:
@@ -12,7 +12,7 @@ Before starting the analysis, ensure the following:
 - Create a DoS or DDoS attack log 
 - A kali linux attacking machine to perform DoS or DDoS attack
 
-### Performing Cross site scripting (XSS) attack
+### Performing DoS and DDoS attack
 
 - Perform these following commands on victim machine
 - Create an iptables rule to log all incoming TCP SYN packets on port 80 with the prefix "TCP-DDOS:"
@@ -50,7 +50,7 @@ tail -f /var/log/ddos.log
 
 ### 1. Top attacker IP address
 - Open Splunk interface and navigate to the search bar.
-- Enter the following search query to retrieve XSS event:
+- Enter the following search query to retrieve ddos event:
 - Identify key fields in ddos logs such as timestamps, source IP addresses, packets.
 - Use Splunk's field extraction capabilities or regular expressions to extract these fields for better analysis.
 - Example extraction command:
@@ -78,14 +78,6 @@ index=* source="/var/log/ddos.log"
 | sort -packet_count
 ```
 
-- Table view:
-
-<img width="1513" height="186" alt="image" src="https://github.com/user-attachments/assets/6e7bd552-db98-4127-a8e9-70048742d311" />
-
-- Dashboard view:
-
-<img width="723" height="426" alt="image" src="https://github.com/user-attachments/assets/9f7fe05b-c1f5-4de3-bcce-ee36e82e2d50" />
-
 
 ### 3. Identify Dos and DDoS attack over time
 - Detect sudden spike in your network from single source
@@ -96,11 +88,6 @@ index=* source="/var/log/ddos.log"
 | where packet_count >= 100
 | timechart count by SRC
 ```
-
-- Dashboard view
-
-<img width="736" height="430" alt="image" src="https://github.com/user-attachments/assets/ac79ebae-5727-4c7d-b573-393fe1d7c758" />
-
 
 
 ### 4. Detecting DDoS attack from random sources
@@ -118,9 +105,6 @@ index=* source="/var/log/ddos.log"
 | sort -packet_count
 ```
 
-- Dashboard view
-
-<img width="724" height="432" alt="image" src="https://github.com/user-attachments/assets/22132bfe-611c-4dcb-85cb-8a5760580279" />
 
 
 ### 5. DDoS indicator over packets from different sources
@@ -131,10 +115,6 @@ index=* source="/var/log/ddos.log"
 | sort -packets
 ```
 
-- Table view
-
-<img width="733" height="428" alt="image" src="https://github.com/user-attachments/assets/30a28722-0e71-4f22-8907-542bb8394a7e" />
-
 
 ### 6. Top affected ports
 ```bash
@@ -142,17 +122,24 @@ index=* source="/var/log/ddos.log"
 | stats count by DPT
 ```
 
-### Top affected protocols
+### 7. Top affected protocols
 ```bash
-index=* source="/var/log/ddos.log" "*"
+index=* source="/var/log/ddos.log"
 | stats count by PROTO
 ```
 
-### Top attacker geolocation
+### 8. Top attacker geolocation
 ```bash
-index=* source="/var/log/ddos.log" "*"
+index=* source="/var/log/ddos.log" 
 | iplocation SRC
 | stats count by Country
 | sort -count
 | geom geo_countries allFeatures=True featureIdField=Country
 ```
+
+### Full Dashboard view
+
+<img width="1625" height="871" alt="image" src="https://github.com/user-attachments/assets/6b6678da-7cc7-4128-ab7f-17c4553b1754" />
+<img width="1619" height="441" alt="image" src="https://github.com/user-attachments/assets/43409293-8306-43ec-89c0-0f5cc3c561b4" />
+
+
